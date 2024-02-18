@@ -10,23 +10,17 @@ class ChatModel extends FlutterFlowModel<ChatWidget> {
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
-  // State field(s) for ListView widget.
-  ScrollController? listViewController;
 
   /// Initialization and disposal methods.
 
   @override
-  void initState(BuildContext context) {
-    listViewController = ScrollController();
-  }
+  void initState(BuildContext context) {}
 
   @override
   void dispose() {
     unfocusNode.dispose();
     textFieldFocusNode?.dispose();
     textController?.dispose();
-
-    listViewController?.dispose();
   }
 
   /// Action blocks are added here.
