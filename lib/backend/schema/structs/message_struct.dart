@@ -7,58 +7,77 @@ import '/flutter_flow/flutter_flow_util.dart';
 
 class MessageStruct extends BaseStruct {
   MessageStruct({
-    String? type,
-    String? content,
-  })  : _type = type,
-        _content = content;
+    String? message,
+    String? authorName,
+    DateTime? when,
+  })  : _message = message,
+        _authorName = authorName,
+        _when = when;
 
-  // "type" field.
-  String? _type;
-  String get type => _type ?? '';
-  set type(String? val) => _type = val;
-  bool hasType() => _type != null;
+  // "message" field.
+  String? _message;
+  String get message => _message ?? '';
+  set message(String? val) => _message = val;
+  bool hasMessage() => _message != null;
 
-  // "content" field.
-  String? _content;
-  String get content => _content ?? '';
-  set content(String? val) => _content = val;
-  bool hasContent() => _content != null;
+  // "author_name" field.
+  String? _authorName;
+  String get authorName => _authorName ?? '';
+  set authorName(String? val) => _authorName = val;
+  bool hasAuthorName() => _authorName != null;
+
+  // "when" field.
+  DateTime? _when;
+  DateTime? get when => _when;
+  set when(DateTime? val) => _when = val;
+  bool hasWhen() => _when != null;
 
   static MessageStruct fromMap(Map<String, dynamic> data) => MessageStruct(
-        type: data['type'] as String?,
-        content: data['content'] as String?,
+        message: data['message'] as String?,
+        authorName: data['author_name'] as String?,
+        when: data['when'] as DateTime?,
       );
 
   static MessageStruct? maybeFromMap(dynamic data) =>
       data is Map ? MessageStruct.fromMap(data.cast<String, dynamic>()) : null;
 
   Map<String, dynamic> toMap() => {
-        'type': _type,
-        'content': _content,
+        'message': _message,
+        'author_name': _authorName,
+        'when': _when,
       }.withoutNulls;
 
   @override
   Map<String, dynamic> toSerializableMap() => {
-        'type': serializeParam(
-          _type,
+        'message': serializeParam(
+          _message,
           ParamType.String,
         ),
-        'content': serializeParam(
-          _content,
+        'author_name': serializeParam(
+          _authorName,
           ParamType.String,
+        ),
+        'when': serializeParam(
+          _when,
+          ParamType.DateTime,
         ),
       }.withoutNulls;
 
   static MessageStruct fromSerializableMap(Map<String, dynamic> data) =>
       MessageStruct(
-        type: deserializeParam(
-          data['type'],
+        message: deserializeParam(
+          data['message'],
           ParamType.String,
           false,
         ),
-        content: deserializeParam(
-          data['content'],
+        authorName: deserializeParam(
+          data['author_name'],
           ParamType.String,
+          false,
+        ),
+        when: deserializeParam(
+          data['when'],
+          ParamType.DateTime,
           false,
         ),
       );
@@ -69,19 +88,22 @@ class MessageStruct extends BaseStruct {
   @override
   bool operator ==(Object other) {
     return other is MessageStruct &&
-        type == other.type &&
-        content == other.content;
+        message == other.message &&
+        authorName == other.authorName &&
+        when == other.when;
   }
 
   @override
-  int get hashCode => const ListEquality().hash([type, content]);
+  int get hashCode => const ListEquality().hash([message, authorName, when]);
 }
 
 MessageStruct createMessageStruct({
-  String? type,
-  String? content,
+  String? message,
+  String? authorName,
+  DateTime? when,
 }) =>
     MessageStruct(
-      type: type,
-      content: content,
+      message: message,
+      authorName: authorName,
+      when: when,
     );
