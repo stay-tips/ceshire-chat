@@ -80,8 +80,10 @@ class _ChatWidgetState extends State<ChatWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print('FloatingActionButton pressed ...');
+          onPressed: () async {
+            await actions.sendMessage(
+              _model.textController.text,
+            );
           },
           backgroundColor: FlutterFlowTheme.of(context).primary,
           elevation: 8.0,
@@ -122,8 +124,8 @@ class _ChatWidgetState extends State<ChatWidget> {
                       autofocus: true,
                       obscureText: false,
                       decoration: InputDecoration(
-                        labelText: 'Meaow....',
                         labelStyle: FlutterFlowTheme.of(context).labelMedium,
+                        hintText: 'Tell me something....',
                         hintStyle: FlutterFlowTheme.of(context).labelMedium,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
