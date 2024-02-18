@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Ceshire-Chat</string>
+	<string>Cheshire-Chat</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 
@@ -29,7 +29,7 @@
         <string>stay.tips</string>
         <key>CFBundleURLSchemes</key>
         <array>
-        <string>ceshirechat</string>
+        <string>cheshirechat</string>
         </array>
         </dict>
     </array>

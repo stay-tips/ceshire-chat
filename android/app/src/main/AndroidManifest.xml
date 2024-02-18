@@ -45,7 +45,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="ceshirechat" android:host="stay.tips" />
+                <data android:scheme="cheshirechat" android:host="stay.tips" />
             </intent-filter>
 
         </activity>
