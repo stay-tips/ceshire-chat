@@ -1,4 +1,4 @@
-# cheshire-chat
+# Cheshire-Chat
 
 A new Flutter project.
 
