@@ -154,7 +154,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                           return Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Text(
-                              messageItem.hasContent().toString(),
+                              messageItem.hasMessage().toString(),
                               style: FlutterFlowTheme.of(context).bodyMedium,
                             ),
                           );
