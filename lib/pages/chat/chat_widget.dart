@@ -28,7 +28,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await actions.initWebSocketConnection(
-        'ws://localhost:1865/ws',
+        'ws://ccat.local:1865/ws',
         'user',
         () async {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -73,9 +73,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => _model.unfocusNode.canRequestFocus ? FocusScope.of(context).requestFocus(_model.unfocusNode) : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -132,8 +130,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                       ),
                       style: FlutterFlowTheme.of(context).bodyMedium,
                       maxLines: null,
-                      validator:
-                          _model.textControllerValidator.asValidator(context),
+                      validator: _model.textControllerValidator.asValidator(context),
                     ),
                   ),
                 ),
