@@ -28,14 +28,15 @@ Future initWebSocketConnection(
     print('*** incoming message $message');
     //final List<ChatResponseStruct> = convertJsontoChatResp(message);
     final json = jsonDecode(message);
-    print("*** message decoded ${json['type']}");
-    final res = MessageStruct.fromMap(json);
+    print("*** message type ${json['type']}");
+    final res = InMessageStruct.fromMap(json);
 
     print("**** cat error? ${res.type == 'error'}");
 
     if (res.type == 'chat') {
       print("*** chat message ${res.content}");
-      addMessage(res);
+      MessageStruct message = MessageStruct(message: res.content, authorName: 'Ceshire Cat', when: DateTime.now());
+      addMessage(message);
       // addToChatHistory(res, callbackAction);
       // } else if (res.type == 'property') {
       //   print("*** property message ${res.content}");
@@ -48,6 +49,7 @@ Future initWebSocketConnection(
     } else {
       print("*** unknown message ${res.content}");
     }
+    callback.call();
   });
 
   // Listen to changes in the connection state.
@@ -58,19 +60,12 @@ Future initWebSocketConnection(
 }
 
 void addMessage(MessageStruct message) {
-  if (message.type == 'error') {
-    print("**** cat response has error...");
-  }
-  String? content = message.content;
-
-  // prepare response
-  // final chat = ChatResponseStruct(catResponse: response, text: message);
-  // FFAppState().addToChatHistory(chat);
+  // add to view
 
   FFAppState().updateMessagesAtIndex(
     FFAppState().messages.length - 1,
     (e) {
-      e..content = message.content; //..
+      e..message = message.message;
       return e;
     },
   );
