@@ -88,12 +88,6 @@ class FFAppState extends ChangeNotifier {
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
   }
-
-  dynamic _socket;
-  dynamic get socket => _socket;
-  set socket(dynamic value) {
-    _socket = value;
-  }
 }
 
 void _safeInit(Function() initializeField) {
