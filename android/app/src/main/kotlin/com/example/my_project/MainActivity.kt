@@ -1,4 +1,4 @@
-package com.mycompany.ceshirechat
+package tips.stay.ceshirechat
 
 import io.flutter.embedding.android.FlutterActivity
 
