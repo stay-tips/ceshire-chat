@@ -1,4 +1,4 @@
-# Cat Client
+# Ceshire-Chat
 
 A new Flutter project.
 

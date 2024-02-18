@@ -2,6 +2,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'chat_model.dart';
 export 'chat_model.dart';
 
@@ -43,6 +44,8 @@ class _ChatWidgetState extends State<ChatWidget> {
         ),
       );
     }
+
+    context.watch<FFAppState>();
 
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
@@ -114,17 +117,17 @@ class _ChatWidgetState extends State<ChatWidget> {
                   decoration: const BoxDecoration(),
                   child: Builder(
                     builder: (context) {
-                      final msg = _model.messages.toList();
+                      final message = FFAppState().messages.toList();
                       return ListView.builder(
                         padding: EdgeInsets.zero,
                         scrollDirection: Axis.vertical,
-                        itemCount: msg.length,
-                        itemBuilder: (context, msgIndex) {
-                          final msgItem = msg[msgIndex];
+                        itemCount: message.length,
+                        itemBuilder: (context, messageIndex) {
+                          final messageItem = message[messageIndex];
                           return Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: Text(
-                              msgItem.hasContent().toString(),
+                              messageItem.hasContent().toString(),
                               style: FlutterFlowTheme.of(context).bodyMedium,
                             ),
                           );
