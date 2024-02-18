@@ -28,7 +28,7 @@ class _ChatWidgetState extends State<ChatWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await actions.initWebSocketConnection(
-        'ws://localhost:1865/ws',
+        'ws://ccat.local:1865/ws',
         'user',
         () async {
           ScaffoldMessenger.of(context).showSnackBar(
