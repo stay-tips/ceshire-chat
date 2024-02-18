@@ -21,6 +21,7 @@ Future initWebSocketConnection(
   }
   final uri = endpoint + '/' + userId;
   final socket = WebSocket(Uri.parse(uri));
+  FFAppState().socket = socket;
 
   socket.messages.listen((message) {
     // Handle incoming messages.
@@ -47,9 +48,6 @@ Future initWebSocketConnection(
     } else {
       print("*** unknown message ${res.content}");
     }
-
-    //addToChatHistory(json, callbackAction);
-    addMessage(res);
   });
 
   // Listen to changes in the connection state.
