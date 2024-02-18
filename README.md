@@ -1,2 +1,7 @@
-# ceshire-chat
-a simple chat client for ceshire cat
+# Cat Client
+
+A new Flutter project.
+
+## Getting Started
+
+FlutterFlow projects are built to run on the Flutter _stable_ release.
