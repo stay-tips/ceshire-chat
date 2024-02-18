@@ -30,7 +30,7 @@ Future initWebSocketConnection(
     print("*** message decoded ${json['type']}");
     final res = MessageStruct.fromMap(json);
 
-    print("**** cat error? ${res.error}");
+    print("**** cat error? ${res.type == 'error'}");
 
     if (res.type == 'chat') {
       print("*** chat message ${res.content}");
@@ -72,7 +72,7 @@ void addMessage(MessageStruct message) {
   FFAppState().updateMessagesAtIndex(
     FFAppState().messages.length - 1,
     (e) {
-      e..content = message; //"${e.content}";
+      e..content = message.content; //..
       return e;
     },
   );
