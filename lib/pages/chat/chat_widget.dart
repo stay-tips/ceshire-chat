@@ -1,9 +1,7 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
-import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -26,14 +24,6 @@ class _ChatWidgetState extends State<ChatWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ChatModel());
-
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await actions.initWebSocketConnection(
-        'ws://ccat.local:1865/ws',
-        'user',
-      );
-    });
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -72,26 +62,29 @@ class _ChatWidgetState extends State<ChatWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await actions.sendMessage(
-              _model.textController.text,
-            );
-            setState(() {
-              _model.textController?.clear();
-            });
-            await _model.listViewController?.animateTo(
-              _model.listViewController!.position.maxScrollExtent,
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.ease,
-            );
-          },
-          backgroundColor: FlutterFlowTheme.of(context).primary,
-          elevation: 8.0,
-          child: Icon(
-            Icons.send,
-            color: FlutterFlowTheme.of(context).info,
-            size: 24.0,
+        floatingActionButton: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+          child: FloatingActionButton(
+            onPressed: () async {
+              await actions.sendMessage(
+                _model.userInputController.text,
+              );
+              setState(() {
+                _model.userInputController?.clear();
+              });
+              await _model.listViewController?.animateTo(
+                _model.listViewController!.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.ease,
+              );
+            },
+            backgroundColor: FlutterFlowTheme.of(context).primary,
+            elevation: 8.0,
+            child: Icon(
+              Icons.send,
+              color: FlutterFlowTheme.of(context).info,
+              size: 24.0,
+            ),
           ),
         ),
         appBar: AppBar(
@@ -117,26 +110,47 @@ class _ChatWidgetState extends State<ChatWidget> {
               children: [
                 Align(
                   alignment: const AlignmentDirectional(0.0, 1.0),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 0.0),
-                    child: TextFormField(
-                      controller: _model.textController,
-                      focusNode: _model.textFieldFocusNode,
-                      autofocus: true,
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        labelStyle: FlutterFlowTheme.of(context).labelMedium,
-                        hintText: 'Tell me something....',
-                        hintStyle: FlutterFlowTheme.of(context).labelMedium,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        focusedErrorBorder: InputBorder.none,
+                  child: TextFormField(
+                    controller: _model.userInputController,
+                    focusNode: _model.userInputFocusNode,
+                    autofocus: true,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      labelStyle: FlutterFlowTheme.of(context).labelMedium,
+                      hintText: 'Tell me something....',
+                      hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).alternate,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
-                      style: FlutterFlowTheme.of(context).bodyMedium,
-                      maxLines: null,
-                      validator: _model.textControllerValidator.asValidator(context),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).primary,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).error,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedErrorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).error,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
                     ),
+                    style: FlutterFlowTheme.of(context).labelMedium,
+                    maxLines: null,
+                    validator: _model.userInputControllerValidator.asValidator(context),
                   ),
                 ),
                 Container(

@@ -6,10 +6,10 @@ class ChatModel extends FlutterFlowModel<ChatWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode;
-  TextEditingController? textController;
-  String? Function(BuildContext, String?)? textControllerValidator;
+  // State field(s) for user_input widget.
+  FocusNode? userInputFocusNode;
+  TextEditingController? userInputController;
+  String? Function(BuildContext, String?)? userInputControllerValidator;
   // State field(s) for ListView widget.
   ScrollController? listViewController;
 
@@ -23,8 +23,8 @@ class ChatModel extends FlutterFlowModel<ChatWidget> {
   @override
   void dispose() {
     unfocusNode.dispose();
-    textFieldFocusNode?.dispose();
-    textController?.dispose();
+    userInputFocusNode?.dispose();
+    userInputController?.dispose();
 
     listViewController?.dispose();
   }
