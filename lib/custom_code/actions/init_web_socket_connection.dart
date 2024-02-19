@@ -45,7 +45,6 @@ Future initWebSocketConnection(String endpoint, String? userId) async {
     } else {
       print("*** unknown message ${res.content}");
     }
-    callback.call();
   });
 
   // Listen to changes in the connection state.
@@ -57,12 +56,13 @@ Future initWebSocketConnection(String endpoint, String? userId) async {
 
 void addMessage(MessageStruct message) {
   // add to view
-
-  FFAppState().updateMessagesAtIndex(
-    FFAppState().messages.length - 1,
-    (e) {
-      e..message = message.message;
-      return e;
-    },
-  );
+  FFAppState().addToMessages(message);
+  // FFAppState().updateMessagesAtIndex(
+  //   FFAppState().messages.length - 1,
+  //   (e) {
+  //     e..message = message.message;
+  //     return e;
+  //   },
+  // );
+  FFAppState().notifyListeners();
 }
