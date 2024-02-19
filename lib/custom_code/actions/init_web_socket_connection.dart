@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:web_socket_client/web_socket_client.dart';
+import 'package:web_socket_client/web_socket_client.dart' as wc;
+
 import 'dart:convert';
 
 Future initWebSocketConnection(String endpoint, String? userId) async {
@@ -16,7 +17,7 @@ Future initWebSocketConnection(String endpoint, String? userId) async {
     userId = 'user'; //defualt ceshire cat user
   }
   final uri = endpoint + '/' + userId;
-  final socket = WebSocket(Uri.parse(uri));
+  final socket = wc.WebSocket(Uri.parse(uri));
   FFAppState().socket = socket;
 
   socket.messages.listen((message) {
@@ -33,6 +34,7 @@ Future initWebSocketConnection(String endpoint, String? userId) async {
       print("*** chat message ${res.content}");
       MessageStruct message = MessageStruct(message: res.content, authorName: 'Ceshire Cat', when: DateTime.now());
       addMessage(message);
+
       // addToChatHistory(res, callbackAction);
       // } else if (res.type == 'property') {
       //   print("*** property message ${res.content}");
@@ -48,15 +50,18 @@ Future initWebSocketConnection(String endpoint, String? userId) async {
   });
 
   // Listen to changes in the connection state.
-  socket.connection.listen((state) {
+  socket.connection.listen((wc.ConnectionState state) {
     // Handle changes in the connection state.
-    print("**** connection state changed $state");
+    print("**** connection state changed ${state.runtimeType} ");
   });
 }
 
 void addMessage(MessageStruct message) {
   // add to view
   FFAppState().addToMessages(message);
+
+  // MessageStruct text = MessageStruct(message: '', authorName: 'Human', when: DateTime.now());
+  // FFAppState().addToMessages(text);
 
   // FFAppState().updateMessagesAtIndex(
   //   FFAppState().messages.length - 1,

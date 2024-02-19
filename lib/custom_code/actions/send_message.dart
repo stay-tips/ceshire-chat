@@ -17,4 +17,6 @@ Future sendMessage(String? content, Future Function() callback) async {
   // send message
   OutMessageStruct message = OutMessageStruct(text: content);
   FFAppState().socket.send(jsonEncode(message.toMap()));
+
+  callback.call();
 }
