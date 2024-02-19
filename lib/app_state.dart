@@ -88,6 +88,12 @@ class FFAppState extends ChangeNotifier {
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
   }
+
+  bool _isResponding = false;
+  bool get isResponding => _isResponding;
+  set isResponding(bool value) {
+    _isResponding = value;
+  }
 }
 
 void _safeInit(Function() initializeField) {
