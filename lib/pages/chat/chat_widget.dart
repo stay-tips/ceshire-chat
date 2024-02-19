@@ -34,7 +34,7 @@ class _ChatWidgetState extends State<ChatWidget> {
         'user',
       );
     });
-      
+
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await actions.initWebSocketConnection(
@@ -76,6 +76,14 @@ class _ChatWidgetState extends State<ChatWidget> {
           onPressed: () async {
             await actions.sendMessage(
               _model.textController.text,
+            );
+            setState(() {
+              _model.textController?.clear();
+            });
+            await _model.listViewController?.animateTo(
+              _model.listViewController!.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.ease,
             );
           },
           backgroundColor: FlutterFlowTheme.of(context).primary,
@@ -127,8 +135,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                       ),
                       style: FlutterFlowTheme.of(context).bodyMedium,
                       maxLines: null,
-                      validator:
-                          _model.textControllerValidator.asValidator(context),
+                      validator: _model.textControllerValidator.asValidator(context),
                     ),
                   ),
                 ),
@@ -136,18 +143,18 @@ class _ChatWidgetState extends State<ChatWidget> {
                   width: double.infinity,
                   height: MediaQuery.sizeOf(context).height * 0.79,
                   decoration: const BoxDecoration(),
-                  child: Builder(
-                    builder: (context) {
-                      final message = FFAppState().messages.toList();
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        itemCount: message.length,
-                        itemBuilder: (context, messageIndex) {
-                          final messageItem = message[messageIndex];
-                          return Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Builder(
+                      builder: (context) {
+                        final message = FFAppState().messages.toList();
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          itemCount: message.length,
+                          itemBuilder: (context, messageIndex) {
+                            final messageItem = message[messageIndex];
+                            return Text(
                               messageItem.message,
                               style: FlutterFlowTheme.of(context).bodyMedium,
                             );
