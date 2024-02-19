@@ -31,7 +31,9 @@ class _ChatWidgetState extends State<ChatWidget> {
         'ws://ccat.local:1865/ws',
         'user',
         () async {
-          context.goNamed('chat');
+          setState(() {
+            FFAppState().isResponding = false;
+          });
         },
       );
     });
@@ -176,24 +178,38 @@ class _ChatWidgetState extends State<ChatWidget> {
                     child: Builder(
                       builder: (context) {
                         final message = FFAppState().messages.toList();
-                        return ListView.separated(
-                          padding: const EdgeInsets.fromLTRB(
-                            0,
-                            32.0,
-                            0,
-                            32.0,
-                          ),
-                          scrollDirection: Axis.vertical,
-                          itemCount: message.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 12.0),
-                          itemBuilder: (context, messageIndex) {
-                            final messageItem = message[messageIndex];
-                            return Text(
-                              messageItem.message,
-                              style: FlutterFlowTheme.of(context).bodyMedium,
+                        return InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () async {
+                            await _model.listViewController?.animateTo(
+                              _model
+                                  .listViewController!.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.ease,
                             );
                           },
-                          controller: _model.listViewController,
+                          child: ListView.separated(
+                            padding: const EdgeInsets.fromLTRB(
+                              0,
+                              32.0,
+                              0,
+                              32.0,
+                            ),
+                            scrollDirection: Axis.vertical,
+                            itemCount: message.length,
+                            separatorBuilder: (_, __) => const SizedBox(height: 12.0),
+                            itemBuilder: (context, messageIndex) {
+                              final messageItem = message[messageIndex];
+                              return Text(
+                                messageItem.message,
+                                style: FlutterFlowTheme.of(context).bodyMedium,
+                              );
+                            },
+                            controller: _model.listViewController,
+                          ),
                         );
                       },
                     ),
