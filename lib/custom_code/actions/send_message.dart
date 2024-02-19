@@ -7,6 +7,6 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-Future sendMessage(String? content) async {
+Future sendMessage(String? content, Future Function() callback) async {
   // Add your function code here!
 }

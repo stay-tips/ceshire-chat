@@ -70,15 +70,18 @@ class _ChatWidgetState extends State<ChatWidget> {
             onPressed: () async {
               await actions.sendMessage(
                 _model.userInputController.text,
+                () async {
+                  // scroll_down
+                  await _model.listViewController?.animateTo(
+                    _model.listViewController!.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.ease,
+                  );
+                },
               );
               setState(() {
                 _model.userInputController?.clear();
               });
-              await _model.listViewController?.animateTo(
-                _model.listViewController!.position.maxScrollExtent,
-                duration: const Duration(milliseconds: 100),
-                curve: Curves.ease,
-              );
             },
             backgroundColor: FlutterFlowTheme.of(context).primary,
             elevation: 8.0,
