@@ -10,11 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 import 'dart:convert';
 
-Future initWebSocketConnection(
-  String endpoint,
-  String? userId,
-  Future Function() callback,
-) async {
+Future initWebSocketConnection(String endpoint, String? userId) async {
   print('*** Connecting to socket $endpoint');
   if (userId == null) {
     userId = 'user'; //defualt ceshire cat user

@@ -30,21 +30,6 @@ class _ChatWidgetState extends State<ChatWidget> {
       await actions.initWebSocketConnection(
         'ws://ccat.local:1865/ws',
         'user',
-        () async {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'connected',
-                style: FlutterFlowTheme.of(context).labelMedium.override(
-                      fontFamily: 'Readex Pro',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                    ),
-              ),
-              duration: const Duration(milliseconds: 4000),
-              backgroundColor: FlutterFlowTheme.of(context).secondary,
-            ),
-          );
-        },
       );
     });
 
@@ -82,6 +67,14 @@ class _ChatWidgetState extends State<ChatWidget> {
             await actions.sendMessage(
               _model.textController.text,
             );
+            setState(() {
+              _model.textController?.clear();
+            });
+            await _model.listViewController?.animateTo(
+              _model.listViewController!.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.ease,
+            );
           },
           backgroundColor: FlutterFlowTheme.of(context).primary,
           elevation: 8.0,
@@ -95,7 +88,7 @@ class _ChatWidgetState extends State<ChatWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
           title: Text(
-            'Ceshire Chat',
+            'Cheshire Chat',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   color: Colors.white,
@@ -137,27 +130,29 @@ class _ChatWidgetState extends State<ChatWidget> {
                   ),
                 ),
                 Container(
+                  width: double.infinity,
                   height: MediaQuery.sizeOf(context).height * 0.79,
                   decoration: const BoxDecoration(),
-                  child: Builder(
-                    builder: (context) {
-                      final message = FFAppState().messages.toList();
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        itemCount: message.length,
-                        itemBuilder: (context, messageIndex) {
-                          final messageItem = message[messageIndex];
-                          return Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Builder(
+                      builder: (context) {
+                        final message = FFAppState().messages.toList();
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          itemCount: message.length,
+                          itemBuilder: (context, messageIndex) {
+                            final messageItem = message[messageIndex];
+                            return Text(
                               messageItem.message,
                               style: FlutterFlowTheme.of(context).bodyMedium,
-                            ),
-                          );
-                        },
-                      );
-                    },
+                            );
+                          },
+                          controller: _model.listViewController,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
