@@ -8,5 +8,6 @@ import 'package:flutter/material.dart';
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 Future sendMessage(String? content, Future Function() callback) async {
+  print('sending message');
   // Add your function code here!
 }
