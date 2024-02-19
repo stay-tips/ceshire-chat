@@ -30,6 +30,9 @@ class _ChatWidgetState extends State<ChatWidget> {
       await actions.initWebSocketConnection(
         'ws://ccat.local:1865/ws',
         'user',
+        () async {
+          context.goNamed('chat');
+        },
       );
     });
 
@@ -82,6 +85,9 @@ class _ChatWidgetState extends State<ChatWidget> {
               setState(() {
                 _model.userInputController?.clear();
               });
+              setState(() {
+                FFAppState().isResponding = true;
+              });
             },
             backgroundColor: FlutterFlowTheme.of(context).primary,
             elevation: 8.0,
@@ -95,13 +101,26 @@ class _ChatWidgetState extends State<ChatWidget> {
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
-          title: Text(
-            'Cheshire Chat',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Outfit',
-                  color: Colors.white,
-                  fontSize: 22.0,
-                ),
+          title: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Cheshire Chat',
+                style: FlutterFlowTheme.of(context).headlineMedium.override(
+                      fontFamily: 'Outfit',
+                      color: Colors.white,
+                      fontSize: 22.0,
+                    ),
+              ),
+              Icon(
+                Icons.circle_sharp,
+                color: FFAppState().isResponding
+                    ? FlutterFlowTheme.of(context).secondary
+                    : FlutterFlowTheme.of(context).primaryBackground,
+                size: 24.0,
+              ),
+            ],
           ),
           actions: const [],
           centerTitle: false,
@@ -115,48 +134,37 @@ class _ChatWidgetState extends State<ChatWidget> {
               children: [
                 Align(
                   alignment: const AlignmentDirectional(0.0, 1.0),
-                  child: TextFormField(
-                    controller: _model.userInputController,
-                    focusNode: _model.userInputFocusNode,
-                    autofocus: true,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      labelStyle: FlutterFlowTheme.of(context).labelMedium,
-                      hintText: 'Tell me something....',
-                      hintStyle: FlutterFlowTheme.of(context).labelMedium,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Divider(
+                        thickness: 1.0,
+                        color: FlutterFlowTheme.of(context).primary,
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).primary,
-                          width: 2.0,
+                      Align(
+                        alignment: const AlignmentDirectional(0.0, 1.0),
+                        child: TextFormField(
+                          controller: _model.userInputController,
+                          focusNode: _model.userInputFocusNode,
+                          autofocus: true,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelStyle:
+                                FlutterFlowTheme.of(context).labelMedium,
+                            hintText: 'Tell me something....',
+                            hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
+                          ),
+                          style: FlutterFlowTheme.of(context).labelMedium,
+                          maxLines: null,
+                          validator: _model.userInputControllerValidator
+                              .asValidator(context),
                         ),
-                        borderRadius: BorderRadius.circular(8.0),
                       ),
-                      errorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      focusedErrorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).error,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    style: FlutterFlowTheme.of(context).labelMedium,
-                    maxLines: null,
-                    validator: _model.userInputControllerValidator
-                        .asValidator(context),
+                    ],
                   ),
                 ),
                 Container(

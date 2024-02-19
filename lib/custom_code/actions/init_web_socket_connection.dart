@@ -7,14 +7,10 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:web_socket_client/web_socket_client.dart';
-import 'dart:convert';
-
-Future initWebSocketConnection(String endpoint, String? userId) async {
-  print('*** Connecting to socket $endpoint');
-  if (userId == null) {
-    userId = 'user'; //defualt ceshire cat user
-  }
-  final uri = endpoint + '/' + userId;
-  final socket = WebSocket(Uri.parse(uri));
+Future initWebSocketConnection(
+  String endpoint,
+  String? userId,
+  Future Function() callback,
+) async {
+  // Add your function code here!
 }
