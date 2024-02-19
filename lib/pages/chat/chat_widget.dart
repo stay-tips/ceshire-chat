@@ -64,26 +64,29 @@ class _ChatWidgetState extends State<ChatWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await actions.sendMessage(
-              _model.userInputController.text,
-            );
-            setState(() {
-              _model.userInputController?.clear();
-            });
-            await _model.listViewController?.animateTo(
-              _model.listViewController!.position.maxScrollExtent,
-              duration: const Duration(milliseconds: 100),
-              curve: Curves.ease,
-            );
-          },
-          backgroundColor: FlutterFlowTheme.of(context).primary,
-          elevation: 8.0,
-          child: Icon(
-            Icons.send,
-            color: FlutterFlowTheme.of(context).info,
-            size: 24.0,
+        floatingActionButton: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+          child: FloatingActionButton(
+            onPressed: () async {
+              await actions.sendMessage(
+                _model.userInputController.text,
+              );
+              setState(() {
+                _model.userInputController?.clear();
+              });
+              await _model.listViewController?.animateTo(
+                _model.listViewController!.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.ease,
+              );
+            },
+            backgroundColor: FlutterFlowTheme.of(context).primary,
+            elevation: 8.0,
+            child: Icon(
+              Icons.send,
+              color: FlutterFlowTheme.of(context).info,
+              size: 24.0,
+            ),
           ),
         ),
         appBar: AppBar(
