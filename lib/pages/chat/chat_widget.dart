@@ -30,21 +30,6 @@ class _ChatWidgetState extends State<ChatWidget> {
       await actions.initWebSocketConnection(
         'ws://ccat.local:1865/ws',
         'user',
-        () async {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'connected',
-                style: FlutterFlowTheme.of(context).labelSmall.override(
-                      fontFamily: 'Readex Pro',
-                      color: FlutterFlowTheme.of(context).primaryText,
-                    ),
-              ),
-              duration: const Duration(milliseconds: 4000),
-              backgroundColor: FlutterFlowTheme.of(context).secondary,
-            ),
-          );
-        },
       );
     });
 
@@ -105,7 +90,7 @@ class _ChatWidgetState extends State<ChatWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
           title: Text(
-            'Ceshire Chat',
+            'Cheshire Chat',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   color: Colors.white,
