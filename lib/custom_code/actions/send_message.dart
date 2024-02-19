@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 import 'dart:convert';
 
-Future sendMessage(String? content) async {
+Future sendMessage(String? content, Future Function() callback) async {
+  // Add your function code here!
   MessageStruct text = MessageStruct(message: content, authorName: 'Human', when: DateTime.now());
   FFAppState().addToMessages(text);
   FFAppState().notifyListeners();
