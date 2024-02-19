@@ -35,7 +35,7 @@ class _ChatWidgetState extends State<ChatWidget> {
             SnackBar(
               content: Text(
                 'connected',
-                style: FlutterFlowTheme.of(context).labelMedium.override(
+                style: FlutterFlowTheme.of(context).labelSmall.override(
                       fontFamily: 'Readex Pro',
                       color: FlutterFlowTheme.of(context).primaryText,
                     ),
@@ -83,6 +83,14 @@ class _ChatWidgetState extends State<ChatWidget> {
           onPressed: () async {
             await actions.sendMessage(
               _model.textController.text,
+            );
+            setState(() {
+              _model.textController?.clear();
+            });
+            await _model.listViewController?.animateTo(
+              _model.listViewController!.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.ease,
             );
           },
           backgroundColor: FlutterFlowTheme.of(context).primary,
@@ -140,27 +148,29 @@ class _ChatWidgetState extends State<ChatWidget> {
                   ),
                 ),
                 Container(
+                  width: double.infinity,
                   height: MediaQuery.sizeOf(context).height * 0.79,
                   decoration: const BoxDecoration(),
-                  child: Builder(
-                    builder: (context) {
-                      final message = FFAppState().messages.toList();
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        itemCount: message.length,
-                        itemBuilder: (context, messageIndex) {
-                          final messageItem = message[messageIndex];
-                          return Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Builder(
+                      builder: (context) {
+                        final message = FFAppState().messages.toList();
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          itemCount: message.length,
+                          itemBuilder: (context, messageIndex) {
+                            final messageItem = message[messageIndex];
+                            return Text(
                               messageItem.message,
                               style: FlutterFlowTheme.of(context).bodyMedium,
-                            ),
-                          );
-                        },
-                      );
-                    },
+                            );
+                          },
+                          controller: _model.listViewController,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
