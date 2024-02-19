@@ -148,10 +148,16 @@ class _ChatWidgetState extends State<ChatWidget> {
                     child: Builder(
                       builder: (context) {
                         final message = FFAppState().messages.toList();
-                        return ListView.builder(
-                          padding: EdgeInsets.zero,
+                        return ListView.separated(
+                          padding: const EdgeInsets.fromLTRB(
+                            0,
+                            32.0,
+                            0,
+                            32.0,
+                          ),
                           scrollDirection: Axis.vertical,
                           itemCount: message.length,
+                          separatorBuilder: (_, __) => const SizedBox(height: 12.0),
                           itemBuilder: (context, messageIndex) {
                             final messageItem = message[messageIndex];
                             return Text(
