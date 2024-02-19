@@ -151,7 +151,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                           decoration: InputDecoration(
                             labelStyle:
                                 FlutterFlowTheme.of(context).labelMedium,
-                            hintText: 'Tell me something....',
+                            hintText: 'Talk to me...',
                             hintStyle: FlutterFlowTheme.of(context).labelMedium,
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
