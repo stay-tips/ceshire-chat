@@ -57,6 +57,7 @@ Future initWebSocketConnection(String endpoint, String? userId) async {
 void addMessage(MessageStruct message) {
   // add to view
   FFAppState().addToMessages(message);
+
   // FFAppState().updateMessagesAtIndex(
   //   FFAppState().messages.length - 1,
   //   (e) {
@@ -64,5 +65,4 @@ void addMessage(MessageStruct message) {
   //     return e;
   //   },
   // );
-  FFAppState().notifyListeners();
 }
