@@ -1,3 +1,4 @@
+import '/backend/schema/structs/index.dart';
 import '/components/message_view_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -218,8 +219,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                               return MessageViewWidget(
                                 key: Key(
                                     'Keynf9_${messageIndex}_of_${message.length}'),
-                                text: messageItem.message,
-                                user: messageItem.authorName,
+                                message: MessageStruct(),
                               );
                             },
                             controller: _model.listViewController,

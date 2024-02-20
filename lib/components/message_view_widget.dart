@@ -1,3 +1,4 @@
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +10,10 @@ export 'message_view_model.dart';
 class MessageViewWidget extends StatefulWidget {
   const MessageViewWidget({
     super.key,
-    String? text,
-    required this.user,
-  }) : text = text ?? '""';
+    required this.message,
+  });
 
-  final String text;
-  final String? user;
+  final MessageStruct? message;
 
   @override
   State<MessageViewWidget> createState() => _MessageViewWidgetState();
@@ -48,15 +47,28 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
 
     return Builder(
       builder: (context) {
-        if (widget.user != 'user') {
+        if (widget.message?.authorName != 'user') {
           return Row(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.person,
-                color: FlutterFlowTheme.of(context).secondaryText,
-                size: 24.0,
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.person,
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                    size: 24.0,
+                  ),
+                  Text(
+                    valueOrDefault<String>(
+                      widget.message?.authorName,
+                      'chat',
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium,
+                  ),
+                ],
               ),
               Column(
                 mainAxisSize: MainAxisSize.max,
@@ -72,7 +84,10 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
                     ),
                   ),
                   Text(
-                    widget.text,
+                    valueOrDefault<String>(
+                      widget.message?.message,
+                      '""',
+                    ),
                     style: FlutterFlowTheme.of(context).bodyLarge,
                   ),
                 ],
@@ -85,10 +100,22 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FaIcon(
-                FontAwesomeIcons.robot,
-                color: FlutterFlowTheme.of(context).secondaryText,
-                size: 24.0,
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  FaIcon(
+                    FontAwesomeIcons.robot,
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                    size: 24.0,
+                  ),
+                  Text(
+                    valueOrDefault<String>(
+                      widget.message?.authorName,
+                      'bot',
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium,
+                  ),
+                ],
               ),
               Column(
                 mainAxisSize: MainAxisSize.max,
@@ -104,7 +131,10 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
                     ),
                   ),
                   Text(
-                    widget.text,
+                    valueOrDefault<String>(
+                      widget.message?.message,
+                      '""',
+                    ),
                     style: FlutterFlowTheme.of(context).bodyLarge,
                   ),
                 ],
