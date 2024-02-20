@@ -47,7 +47,7 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
 
     return Builder(
       builder: (context) {
-        if (widget.message?.authorName != 'user') {
+        if (widget.message?.authorName != 'cheshire') {
           return Row(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,6 +102,7 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
             children: [
               Column(
                 mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FaIcon(
                     FontAwesomeIcons.robot,
@@ -124,7 +125,7 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
                     dateTimeFormat(
                         'relative',
                         dateTimeFromSecondsSinceEpoch(
-                            getCurrentTimestamp.secondsSinceEpoch)),
+                            widget.message!.when!.secondsSinceEpoch)),
                     style: const TextStyle(
                       fontWeight: FontWeight.w200,
                       fontSize: 8.0,
