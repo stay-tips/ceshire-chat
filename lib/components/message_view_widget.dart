@@ -48,7 +48,7 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
 
     return Builder(
       builder: (context) {
-        if (widget.user == 'human') {
+        if (widget.user != 'user') {
           return Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,15 +67,27 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
                   ),
                 ].divide(const SizedBox(width: 4.0)),
               ),
-              Text(
-                dateTimeFormat(
-                    'relative',
-                    dateTimeFromSecondsSinceEpoch(
-                        getCurrentTimestamp.secondsSinceEpoch)),
-                style: const TextStyle(
-                  fontWeight: FontWeight.w200,
-                  fontSize: 8.0,
-                ),
+              Wrap(
+                spacing: 0.0,
+                runSpacing: 0.0,
+                alignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                direction: Axis.horizontal,
+                runAlignment: WrapAlignment.start,
+                verticalDirection: VerticalDirection.down,
+                clipBehavior: Clip.none,
+                children: [
+                  Text(
+                    dateTimeFormat(
+                        'relative',
+                        dateTimeFromSecondsSinceEpoch(
+                            getCurrentTimestamp.secondsSinceEpoch)),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w200,
+                      fontSize: 8.0,
+                    ),
+                  ),
+                ],
               ),
             ],
           );
@@ -88,9 +100,21 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    widget.text,
-                    style: FlutterFlowTheme.of(context).bodyLarge,
+                  Wrap(
+                    spacing: 0.0,
+                    runSpacing: 0.0,
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    direction: Axis.horizontal,
+                    runAlignment: WrapAlignment.start,
+                    verticalDirection: VerticalDirection.down,
+                    clipBehavior: Clip.none,
+                    children: [
+                      Text(
+                        widget.text,
+                        style: FlutterFlowTheme.of(context).bodyLarge,
+                      ),
+                    ],
                   ),
                   FaIcon(
                     FontAwesomeIcons.robot,
