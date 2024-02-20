@@ -1,3 +1,4 @@
+import '/components/message_view_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
@@ -151,25 +152,30 @@ class _ChatWidgetState extends State<ChatWidget> {
                       ),
                       Align(
                         alignment: const AlignmentDirectional(0.0, 1.0),
-                        child: TextFormField(
-                          controller: _model.userInputController,
-                          focusNode: _model.userInputFocusNode,
-                          autofocus: true,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelStyle:
-                                FlutterFlowTheme.of(context).labelMedium,
-                            hintText: 'Talk to me...',
-                            hintStyle: FlutterFlowTheme.of(context).labelMedium,
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none,
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              12.0, 0.0, 12.0, 0.0),
+                          child: TextFormField(
+                            controller: _model.userInputController,
+                            focusNode: _model.userInputFocusNode,
+                            autofocus: true,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              labelStyle:
+                                  FlutterFlowTheme.of(context).labelMedium,
+                              hintText: 'Talk to me...',
+                              hintStyle:
+                                  FlutterFlowTheme.of(context).labelMedium,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                            ),
+                            style: FlutterFlowTheme.of(context).labelMedium,
+                            maxLines: null,
+                            validator: _model.userInputControllerValidator
+                                .asValidator(context),
                           ),
-                          style: FlutterFlowTheme.of(context).labelMedium,
-                          maxLines: null,
-                          validator: _model.userInputControllerValidator
-                              .asValidator(context),
                         ),
                       ),
                     ],
@@ -209,9 +215,11 @@ class _ChatWidgetState extends State<ChatWidget> {
                             separatorBuilder: (_, __) => const SizedBox(height: 12.0),
                             itemBuilder: (context, messageIndex) {
                               final messageItem = message[messageIndex];
-                              return Text(
-                                messageItem.message,
-                                style: FlutterFlowTheme.of(context).bodyMedium,
+                              return MessageViewWidget(
+                                key: Key(
+                                    'Keynf9_${messageIndex}_of_${message.length}'),
+                                text: messageItem.message,
+                                user: messageItem.authorName,
                               );
                             },
                             controller: _model.listViewController,
