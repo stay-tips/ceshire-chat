@@ -72,6 +72,8 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
               ),
               Column(
                 mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     dateTimeFormat(
@@ -97,29 +99,12 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
         } else {
           return Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FaIcon(
-                    FontAwesomeIcons.robot,
-                    color: FlutterFlowTheme.of(context).secondaryText,
-                    size: 24.0,
-                  ),
-                  Text(
-                    valueOrDefault<String>(
-                      widget.message?.authorName,
-                      'bot',
-                    ),
-                    style: FlutterFlowTheme.of(context).bodyMedium,
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     dateTimeFormat(
@@ -137,6 +122,24 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
                       '""',
                     ),
                     style: FlutterFlowTheme.of(context).bodyLarge,
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FaIcon(
+                    FontAwesomeIcons.robot,
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                    size: 24.0,
+                  ),
+                  Text(
+                    valueOrDefault<String>(
+                      widget.message?.authorName,
+                      'bot',
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium,
                   ),
                 ],
               ),
