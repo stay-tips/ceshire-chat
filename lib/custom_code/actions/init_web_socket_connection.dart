@@ -34,7 +34,7 @@ Future initWebSocketConnection(
 
     if (res.type == 'chat') {
       print("*** chat message ${res.content}");
-      MessageStruct message = MessageStruct(message: res.content, authorName: 'Ceshire Cat', when: DateTime.now());
+      MessageStruct message = MessageStruct(message: res.content, authorName: 'cheshire', when: DateTime.now());
       addMessage(message);
       callback.call();
       // addToChatHistory(res, callbackAction);
