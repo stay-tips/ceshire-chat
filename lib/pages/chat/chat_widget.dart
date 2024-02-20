@@ -90,6 +90,12 @@ class _ChatWidgetState extends State<ChatWidget> {
               setState(() {
                 FFAppState().isResponding = true;
               });
+              await Future.delayed(const Duration(milliseconds: 5000));
+              await _model.listViewController?.animateTo(
+                _model.listViewController!.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.ease,
+              );
             },
             backgroundColor: FlutterFlowTheme.of(context).primary,
             elevation: 8.0,
