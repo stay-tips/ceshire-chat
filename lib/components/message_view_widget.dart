@@ -49,33 +49,17 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
     return Builder(
       builder: (context) {
         if (widget.user != 'user') {
-          return Column(
+          return Row(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Icon(
-                    Icons.person,
-                    color: FlutterFlowTheme.of(context).secondaryText,
-                    size: 24.0,
-                  ),
-                  Text(
-                    widget.text,
-                    style: FlutterFlowTheme.of(context).bodyLarge,
-                  ),
-                ].divide(const SizedBox(width: 4.0)),
+              Icon(
+                Icons.person,
+                color: FlutterFlowTheme.of(context).secondaryText,
+                size: 24.0,
               ),
-              Wrap(
-                spacing: 0.0,
-                runSpacing: 0.0,
-                alignment: WrapAlignment.start,
-                crossAxisAlignment: WrapCrossAlignment.start,
-                direction: Axis.horizontal,
-                runAlignment: WrapAlignment.start,
-                verticalDirection: VerticalDirection.down,
-                clipBehavior: Clip.none,
+              Column(
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
                     dateTimeFormat(
@@ -87,53 +71,45 @@ class _MessageViewWidgetState extends State<MessageViewWidget> {
                       fontSize: 8.0,
                     ),
                   ),
+                  Text(
+                    widget.text,
+                    style: FlutterFlowTheme.of(context).bodyLarge,
+                  ),
                 ],
               ),
-            ],
+            ].divide(const SizedBox(width: 8.0)),
           );
         } else {
-          return Column(
+          return Row(
             mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              FaIcon(
+                FontAwesomeIcons.robot,
+                color: FlutterFlowTheme.of(context).secondaryText,
+                size: 24.0,
+              ),
+              Column(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Wrap(
-                    spacing: 0.0,
-                    runSpacing: 0.0,
-                    alignment: WrapAlignment.start,
-                    crossAxisAlignment: WrapCrossAlignment.start,
-                    direction: Axis.horizontal,
-                    runAlignment: WrapAlignment.start,
-                    verticalDirection: VerticalDirection.down,
-                    clipBehavior: Clip.none,
-                    children: [
-                      Text(
-                        widget.text,
-                        style: FlutterFlowTheme.of(context).bodyLarge,
-                      ),
-                    ],
+                  Text(
+                    dateTimeFormat(
+                        'relative',
+                        dateTimeFromSecondsSinceEpoch(
+                            getCurrentTimestamp.secondsSinceEpoch)),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w200,
+                      fontSize: 8.0,
+                    ),
                   ),
-                  FaIcon(
-                    FontAwesomeIcons.robot,
-                    color: FlutterFlowTheme.of(context).secondaryText,
-                    size: 24.0,
+                  Text(
+                    widget.text,
+                    style: FlutterFlowTheme.of(context).bodyLarge,
                   ),
-                ].divide(const SizedBox(width: 4.0)),
+                ],
               ),
-              Text(
-                dateTimeFormat(
-                    'relative',
-                    dateTimeFromSecondsSinceEpoch(
-                        getCurrentTimestamp.secondsSinceEpoch)),
-                style: const TextStyle(
-                  fontWeight: FontWeight.w200,
-                  fontSize: 8.0,
-                ),
-              ),
-            ],
+            ].divide(const SizedBox(width: 8.0)),
           );
         }
       },
