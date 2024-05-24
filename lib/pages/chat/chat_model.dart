@@ -3,33 +3,41 @@ import 'chat_widget.dart' show ChatWidget;
 import 'package:flutter/material.dart';
 
 class ChatModel extends FlutterFlowModel<ChatWidget> {
+  ///  Local state fields for this page.
+
+  bool isDrawerEditing = false;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
-  // State field(s) for user_input widget.
-  FocusNode? userInputFocusNode;
-  TextEditingController? userInputController;
-  String? Function(BuildContext, String?)? userInputControllerValidator;
+  final formKey = GlobalKey<FormState>();
+  // State field(s) for TextField widget.
+  FocusNode? textFieldFocusNode;
+  TextEditingController? textController;
+  String? Function(BuildContext, String?)? textControllerValidator;
+  String? _textControllerValidator(BuildContext context, String? val) {
+    if (val == null || val.isEmpty) {
+      return 'Field is required';
+    }
+
+    return null;
+  }
+
   // State field(s) for ListView widget.
   ScrollController? listViewController;
 
-  /// Initialization and disposal methods.
-
   @override
   void initState(BuildContext context) {
+    textControllerValidator = _textControllerValidator;
     listViewController = ScrollController();
   }
 
   @override
   void dispose() {
     unfocusNode.dispose();
-    userInputFocusNode?.dispose();
-    userInputController?.dispose();
+    textFieldFocusNode?.dispose();
+    textController?.dispose();
 
     listViewController?.dispose();
   }
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

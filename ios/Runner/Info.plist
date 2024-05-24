@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>ceshire chat client</string>
+	<string>cheshire-chat</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Cheshire-Chat</string>
+	<string>cheshire-chat</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 
@@ -26,7 +26,7 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>stay.tips</string>
+        <string>cheshirechat.com</string>
         <key>CFBundleURLSchemes</key>
         <array>
         <string>cheshirechat</string>

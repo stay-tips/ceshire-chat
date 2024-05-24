@@ -19,6 +19,12 @@ class FFAppState extends ChangeNotifier {
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
     _safeInit(() {
+      _chatServerUri = prefs.getString('ff_chatServerUri') ?? _chatServerUri;
+    });
+    _safeInit(() {
+      _chunks = prefs.getStringList('ff_chunks') ?? _chunks;
+    });
+    _safeInit(() {
       _messages = prefs
               .getStringList('ff_messages')
               ?.map((x) {
@@ -42,10 +48,52 @@ class FFAppState extends ChangeNotifier {
 
   late SharedPreferences prefs;
 
+  String _chatServerUri = 'ws://ha.local/ws';
+  String get chatServerUri => _chatServerUri;
+  set chatServerUri(String value) {
+    _chatServerUri = value;
+    prefs.setString('ff_chatServerUri', value);
+  }
+
   dynamic _socket;
   dynamic get socket => _socket;
   set socket(dynamic value) {
     _socket = value;
+  }
+
+  List<String> _chunks = [];
+  List<String> get chunks => _chunks;
+  set chunks(List<String> value) {
+    _chunks = value;
+    prefs.setStringList('ff_chunks', value);
+  }
+
+  void addToChunks(String value) {
+    _chunks.add(value);
+    prefs.setStringList('ff_chunks', _chunks);
+  }
+
+  void removeFromChunks(String value) {
+    _chunks.remove(value);
+    prefs.setStringList('ff_chunks', _chunks);
+  }
+
+  void removeAtIndexFromChunks(int index) {
+    _chunks.removeAt(index);
+    prefs.setStringList('ff_chunks', _chunks);
+  }
+
+  void updateChunksAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    _chunks[index] = updateFn(_chunks[index]);
+    prefs.setStringList('ff_chunks', _chunks);
+  }
+
+  void insertAtIndexInChunks(int index, String value) {
+    _chunks.insert(index, value);
+    prefs.setStringList('ff_chunks', _chunks);
   }
 
   List<MessageStruct> _messages = [];
@@ -87,12 +135,6 @@ class FFAppState extends ChangeNotifier {
     _messages.insert(index, value);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
-  }
-
-  bool _isResponding = false;
-  bool get isResponding => _isResponding;
-  set isResponding(bool value) {
-    _isResponding = value;
   }
 }
 

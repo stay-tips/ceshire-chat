@@ -1,11 +1,8 @@
-import '/backend/schema/structs/index.dart';
-import '/components/message_view_widget.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'chat_model.dart';
 export 'chat_model.dart';
@@ -27,21 +24,8 @@ class _ChatWidgetState extends State<ChatWidget> {
     super.initState();
     _model = createModel(context, () => ChatModel());
 
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await actions.initWebSocketConnection(
-        'ws://ccat.local:1865/ws',
-        'user',
-        () async {
-          setState(() {
-            FFAppState().isResponding = false;
-          });
-        },
-      );
-    });
-
-    _model.userInputController ??= TextEditingController();
-    _model.userInputFocusNode ??= FocusNode();
+    _model.textController ??= TextEditingController();
+    _model.textFieldFocusNode ??= FocusNode();
   }
 
   @override
@@ -53,15 +37,6 @@ class _ChatWidgetState extends State<ChatWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     context.watch<FFAppState>();
 
     return GestureDetector(
@@ -75,10 +50,14 @@ class _ChatWidgetState extends State<ChatWidget> {
           padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
           child: FloatingActionButton(
             onPressed: () async {
+              if (_model.formKey.currentState == null ||
+                  !_model.formKey.currentState!.validate()) {
+                return;
+              }
               await actions.sendMessage(
-                _model.userInputController.text,
+                _model.textController.text,
+                () async {},
                 () async {
-                  // scroll_down
                   await _model.listViewController?.animateTo(
                     _model.listViewController!.position.maxScrollExtent,
                     duration: const Duration(milliseconds: 100),
@@ -86,13 +65,11 @@ class _ChatWidgetState extends State<ChatWidget> {
                   );
                 },
               );
+              setState(() {});
               setState(() {
-                _model.userInputController?.clear();
+                _model.textController?.clear();
               });
-              setState(() {
-                FFAppState().isResponding = true;
-              });
-              await Future.delayed(const Duration(milliseconds: 8000));
+              await Future.delayed(const Duration(milliseconds: 4000));
               await _model.listViewController?.animateTo(
                 _model.listViewController!.position.maxScrollExtent,
                 duration: const Duration(milliseconds: 100),
@@ -116,120 +93,150 @@ class _ChatWidgetState extends State<ChatWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Cheshire Chat',
+                'Chat',
                 style: FlutterFlowTheme.of(context).headlineMedium.override(
                       fontFamily: 'Outfit',
-                      color: Colors.white,
+                      color: FlutterFlowTheme.of(context).alternate,
                       fontSize: 22.0,
+                      letterSpacing: 0.0,
                     ),
               ),
-              Icon(
-                Icons.circle_sharp,
-                color: FFAppState().isResponding
-                    ? FlutterFlowTheme.of(context).secondary
-                    : FlutterFlowTheme.of(context).primaryBackground,
-                size: 24.0,
+              FlutterFlowIconButton(
+                borderColor: FlutterFlowTheme.of(context).primary,
+                borderRadius: 22.0,
+                borderWidth: 1.0,
+                buttonSize: 40.0,
+                fillColor: FlutterFlowTheme.of(context).accent1,
+                icon: Icon(
+                  Icons.settings,
+                  color: FlutterFlowTheme.of(context).alternate,
+                  size: 24.0,
+                ),
+                onPressed: () async {
+                  context.pushNamed('settings');
+                },
               ),
             ],
           ),
           actions: const [],
-          centerTitle: false,
+          centerTitle: true,
           elevation: 2.0,
         ),
         body: SafeArea(
           top: true,
-          child: SizedBox(
-            height: double.infinity,
-            child: Stack(
-              children: [
-                Align(
-                  alignment: const AlignmentDirectional(0.0, 1.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Divider(
-                        thickness: 1.0,
-                        color: FlutterFlowTheme.of(context).primary,
-                      ),
-                      Align(
-                        alignment: const AlignmentDirectional(0.0, 1.0),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              12.0, 0.0, 12.0, 0.0),
-                          child: TextFormField(
-                            controller: _model.userInputController,
-                            focusNode: _model.userInputFocusNode,
-                            autofocus: true,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              labelStyle:
-                                  FlutterFlowTheme.of(context).labelMedium,
-                              hintText: 'Talk to me...',
-                              hintStyle:
-                                  FlutterFlowTheme.of(context).labelMedium,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              focusedErrorBorder: InputBorder.none,
-                            ),
-                            style: FlutterFlowTheme.of(context).labelMedium,
-                            maxLines: null,
-                            validator: _model.userInputControllerValidator
-                                .asValidator(context),
+          child: Align(
+            alignment: const AlignmentDirectional(0.0, 1.0),
+            child: SizedBox(
+              height: double.infinity,
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: const AlignmentDirectional(0.0, 1.0),
+                    child: Form(
+                      key: _model.formKey,
+                      autovalidateMode: AutovalidateMode.disabled,
+                      child: Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 74.0, 0.0),
+                        child: TextFormField(
+                          controller: _model.textController,
+                          focusNode: _model.textFieldFocusNode,
+                          onFieldSubmitted: (_) async {
+                            if (_model.formKey.currentState == null ||
+                                !_model.formKey.currentState!.validate()) {
+                              return;
+                            }
+                            await actions.sendMessage(
+                              _model.textController.text,
+                              () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      title: const Text('ERROR'),
+                                      content: const Text('need select URI'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          child: const Text('MY BAD'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              () async {
+                                setState(() {});
+                              },
+                            );
+                            setState(() {});
+                          },
+                          autofocus: true,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'Meaow....',
+                            labelStyle: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            focusedErrorBorder: InputBorder.none,
                           ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                          maxLines: null,
+                          validator: _model.textControllerValidator
+                              .asValidator(context),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: MediaQuery.sizeOf(context).height * 0.79,
-                  decoration: const BoxDecoration(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                  Container(
+                    height: MediaQuery.sizeOf(context).height * 0.79,
+                    decoration: const BoxDecoration(),
                     child: Builder(
                       builder: (context) {
                         final message = FFAppState().messages.toList();
-                        return InkWell(
-                          splashColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () async {
-                            await _model.listViewController?.animateTo(
-                              _model
-                                  .listViewController!.position.maxScrollExtent,
-                              duration: const Duration(milliseconds: 100),
-                              curve: Curves.ease,
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          itemCount: message.length,
+                          itemBuilder: (context, messageIndex) {
+                            final messageItem = message[messageIndex];
+                            return Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                messageItem.content,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Readex Pro',
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
                             );
                           },
-                          child: ListView.separated(
-                            padding: const EdgeInsets.fromLTRB(
-                              0,
-                              32.0,
-                              0,
-                              32.0,
-                            ),
-                            scrollDirection: Axis.vertical,
-                            itemCount: message.length,
-                            separatorBuilder: (_, __) => const SizedBox(height: 12.0),
-                            itemBuilder: (context, messageIndex) {
-                              final messageItem = message[messageIndex];
-                              return MessageViewWidget(
-                                key: Key(
-                                    'Keynf9_${messageIndex}_of_${message.length}'),
-                                message: MessageStruct(),
-                              );
-                            },
-                            controller: _model.listViewController,
-                          ),
+                          controller: _model.listViewController,
                         );
                       },
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
