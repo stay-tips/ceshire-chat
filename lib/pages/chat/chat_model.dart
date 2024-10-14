@@ -9,35 +9,18 @@ class ChatModel extends FlutterFlowModel<ChatWidget> {
 
   ///  State fields for stateful widgets in this page.
 
-  final unfocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
-  String? _textControllerValidator(BuildContext context, String? val) {
-    if (val == null || val.isEmpty) {
-      return 'Field is required';
-    }
-
-    return null;
-  }
-
-  // State field(s) for ListView widget.
-  ScrollController? listViewController;
 
   @override
-  void initState(BuildContext context) {
-    textControllerValidator = _textControllerValidator;
-    listViewController = ScrollController();
-  }
+  void initState(BuildContext context) {}
 
   @override
   void dispose() {
-    unfocusNode.dispose();
     textFieldFocusNode?.dispose();
     textController?.dispose();
-
-    listViewController?.dispose();
   }
 }

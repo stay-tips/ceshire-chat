@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 import 'dart:convert';
 
-Future sendMessage(String text, Future Function() uriCallback,
+Future sendMessage(String text, Future Function() errorCallback,
     Future Function() uiAction) async {
   String? uri = FFAppState().chatServerUri;
   if (uri == null) {
     debugPrint("uri is null");
-    await uriCallback.call();
+    await errorCallback.call();
     uri = FFAppState().chatServerUri;
     debugPrint("uri is $uri");
   }

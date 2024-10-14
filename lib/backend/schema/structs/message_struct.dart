@@ -16,12 +16,14 @@ class MessageStruct extends BaseStruct {
   String? _type;
   String get type => _type ?? '';
   set type(String? val) => _type = val;
+
   bool hasType() => _type != null;
 
   // "content" field.
   String? _content;
   String get content => _content ?? '';
   set content(String? val) => _content = val;
+
   bool hasContent() => _content != null;
 
   static MessageStruct fromMap(Map<String, dynamic> data) => MessageStruct(

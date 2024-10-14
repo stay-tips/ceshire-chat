@@ -48,7 +48,7 @@ class FFAppState extends ChangeNotifier {
 
   late SharedPreferences prefs;
 
-  String _chatServerUri = 'ws://ha.local/ws';
+  String _chatServerUri = 'ws://5.94.219.157/ws/user';
   String get chatServerUri => _chatServerUri;
   set chatServerUri(String value) {
     _chatServerUri = value;
@@ -69,17 +69,17 @@ class FFAppState extends ChangeNotifier {
   }
 
   void addToChunks(String value) {
-    _chunks.add(value);
+    chunks.add(value);
     prefs.setStringList('ff_chunks', _chunks);
   }
 
   void removeFromChunks(String value) {
-    _chunks.remove(value);
+    chunks.remove(value);
     prefs.setStringList('ff_chunks', _chunks);
   }
 
   void removeAtIndexFromChunks(int index) {
-    _chunks.removeAt(index);
+    chunks.removeAt(index);
     prefs.setStringList('ff_chunks', _chunks);
   }
 
@@ -87,12 +87,12 @@ class FFAppState extends ChangeNotifier {
     int index,
     String Function(String) updateFn,
   ) {
-    _chunks[index] = updateFn(_chunks[index]);
+    chunks[index] = updateFn(_chunks[index]);
     prefs.setStringList('ff_chunks', _chunks);
   }
 
   void insertAtIndexInChunks(int index, String value) {
-    _chunks.insert(index, value);
+    chunks.insert(index, value);
     prefs.setStringList('ff_chunks', _chunks);
   }
 
@@ -105,19 +105,19 @@ class FFAppState extends ChangeNotifier {
   }
 
   void addToMessages(MessageStruct value) {
-    _messages.add(value);
+    messages.add(value);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
   }
 
   void removeFromMessages(MessageStruct value) {
-    _messages.remove(value);
+    messages.remove(value);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
   }
 
   void removeAtIndexFromMessages(int index) {
-    _messages.removeAt(index);
+    messages.removeAt(index);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
   }
@@ -126,13 +126,13 @@ class FFAppState extends ChangeNotifier {
     int index,
     MessageStruct Function(MessageStruct) updateFn,
   ) {
-    _messages[index] = updateFn(_messages[index]);
+    messages[index] = updateFn(_messages[index]);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
   }
 
   void insertAtIndexInMessages(int index, MessageStruct value) {
-    _messages.insert(index, value);
+    messages.insert(index, value);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
   }
