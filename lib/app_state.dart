@@ -19,17 +19,38 @@ class FFAppState extends ChangeNotifier {
   Future initializePersistedState() async {
     prefs = await SharedPreferences.getInstance();
     _safeInit(() {
-      _chatServerUri = prefs.getString('ff_chatServerUri') ?? _chatServerUri;
+      _chunks = prefs.getStringList('ff_chunks') ?? _chunks;
     });
     _safeInit(() {
-      _chunks = prefs.getStringList('ff_chunks') ?? _chunks;
+      if (prefs.containsKey('ff_user')) {
+        try {
+          final serializedData = prefs.getString('ff_user') ?? '{}';
+          _user = UserStruct.fromSerializableMap(jsonDecode(serializedData));
+        } catch (e) {
+          print("Can't decode persisted data type. Error: $e.");
+        }
+      }
+    });
+    _safeInit(() {
+      if (prefs.containsKey('ff_server')) {
+        try {
+          final serializedData = prefs.getString('ff_server') ?? '{}';
+          _server = ServerSettingsStruct.fromSerializableMap(
+              jsonDecode(serializedData));
+        } catch (e) {
+          print("Can't decode persisted data type. Error: $e.");
+        }
+      }
+    });
+    _safeInit(() {
+      _serverUrl = prefs.getString('ff_serverUrl') ?? _serverUrl;
     });
     _safeInit(() {
       _messages = prefs
               .getStringList('ff_messages')
               ?.map((x) {
                 try {
-                  return MessageStruct.fromSerializableMap(jsonDecode(x));
+                  return ChatResponseStruct.fromSerializableMap(jsonDecode(x));
                 } catch (e) {
                   print("Can't decode persisted data type. Error: $e.");
                   return null;
@@ -47,13 +68,6 @@ class FFAppState extends ChangeNotifier {
   }
 
   late SharedPreferences prefs;
-
-  String _chatServerUri = 'ws://5.94.219.157/ws/user';
-  String get chatServerUri => _chatServerUri;
-  set chatServerUri(String value) {
-    _chatServerUri = value;
-    prefs.setString('ff_chatServerUri', value);
-  }
 
   dynamic _socket;
   dynamic get socket => _socket;
@@ -96,21 +110,58 @@ class FFAppState extends ChangeNotifier {
     prefs.setStringList('ff_chunks', _chunks);
   }
 
-  List<MessageStruct> _messages = [];
-  List<MessageStruct> get messages => _messages;
-  set messages(List<MessageStruct> value) {
+  bool _listening = false;
+  bool get listening => _listening;
+  set listening(bool value) {
+    _listening = value;
+  }
+
+  UserStruct _user = UserStruct();
+  UserStruct get user => _user;
+  set user(UserStruct value) {
+    _user = value;
+    prefs.setString('ff_user', value.serialize());
+  }
+
+  void updateUserStruct(Function(UserStruct) updateFn) {
+    updateFn(_user);
+    prefs.setString('ff_user', _user.serialize());
+  }
+
+  ServerSettingsStruct _server = ServerSettingsStruct();
+  ServerSettingsStruct get server => _server;
+  set server(ServerSettingsStruct value) {
+    _server = value;
+    prefs.setString('ff_server', value.serialize());
+  }
+
+  void updateServerStruct(Function(ServerSettingsStruct) updateFn) {
+    updateFn(_server);
+    prefs.setString('ff_server', _server.serialize());
+  }
+
+  String _serverUrl = '';
+  String get serverUrl => _serverUrl;
+  set serverUrl(String value) {
+    _serverUrl = value;
+    prefs.setString('ff_serverUrl', value);
+  }
+
+  List<ChatResponseStruct> _messages = [];
+  List<ChatResponseStruct> get messages => _messages;
+  set messages(List<ChatResponseStruct> value) {
     _messages = value;
     prefs.setStringList(
         'ff_messages', value.map((x) => x.serialize()).toList());
   }
 
-  void addToMessages(MessageStruct value) {
+  void addToMessages(ChatResponseStruct value) {
     messages.add(value);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
   }
 
-  void removeFromMessages(MessageStruct value) {
+  void removeFromMessages(ChatResponseStruct value) {
     messages.remove(value);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
@@ -124,14 +175,14 @@ class FFAppState extends ChangeNotifier {
 
   void updateMessagesAtIndex(
     int index,
-    MessageStruct Function(MessageStruct) updateFn,
+    ChatResponseStruct Function(ChatResponseStruct) updateFn,
   ) {
     messages[index] = updateFn(_messages[index]);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());
   }
 
-  void insertAtIndexInMessages(int index, MessageStruct value) {
+  void insertAtIndexInMessages(int index, ChatResponseStruct value) {
     messages.insert(index, value);
     prefs.setStringList(
         'ff_messages', _messages.map((x) => x.serialize()).toList());

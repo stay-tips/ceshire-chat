@@ -10,56 +10,69 @@ import 'package:flutter/material.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 import 'dart:convert';
 
-Future sendMessage(String text, Future Function() errorCallback,
-    Future Function() uiAction) async {
-  String? uri = FFAppState().chatServerUri;
-  if (uri == null) {
-    debugPrint("uri is null");
-    await errorCallback.call();
-    uri = FFAppState().chatServerUri;
-    debugPrint("uri is $uri");
-  }
-
+Future sendMessage(
+  String text,
+  Future Function(String? message) messageCallback,
+  Future Function()? uiAction,
+  PromptSettingsStruct settings,
+) async {
   WebSocket? socket = FFAppState().socket;
-  if (socket == null) {
-    debugPrint("initing socket on uri $uri");
-    //init socket
-    socket = WebSocket(Uri.parse(uri));
-    FFAppState().socket = socket;
-    debugPrint("socket initialized");
 
-    // Listen to changes in the connection state.
-    socket.connection.listen((state) {
-      // Handle changes in the connection state.
-      debugPrint("state: $state");
-    });
-
-    socket.messages.listen((message) {
-      // Handle incoming messages.
-      debugPrint("message: $message");
-      if (message != null) {
-        final msg = MessageStruct.fromMap(json.decode(message));
-        debugPrint(msg.toString());
-        switch (msg.type) {
-          case "chat_token":
-            FFAppState().chunks.add(msg.content);
-            break;
-          case "chat":
-            FFAppState().messages.add(msg);
-            uiAction.call();
-
-            break;
-          default:
-            debugPrint("Unknown message type: ${msg.type}");
-        }
-      }
-    });
+  debugPrint("**** first run ******");
+  final address = FFAppState().server.address;
+  if (address == null) {
+    messageCallback
+        .call("400:bad state:  please set server address in settings");
+    return;
   }
+  var name = FFAppState().user?.name;
+  name ??= 'user';
+  var uri = 'ws://$address/ws/$name';
+
+  if (FFAppState().server.isSecure) {
+    uri = 'wss://$address/ws/$name';
+  }
+  //init socket
+  debugPrint("initing socket on uri $uri");
+  socket = WebSocket(Uri.parse(uri));
+
+  debugPrint("socket initialized");
+
+  // ** Monitoring connection **///
+  socket.connection.listen((state) {});
+
+  socket.messages.listen((message) {
+    // Handle incoming messages.
+    debugPrint("message: $message");
+    if (message != null) {
+      final msg = ChatResponseStruct.fromMap(json.decode(message));
+      switch (msg.type) {
+        case "chat_token":
+          FFAppState().chunks.add(msg.content);
+          break;
+        case "chat":
+          FFAppState().messages.add(msg);
+          FFAppState().listening = false;
+
+          uiAction?.call();
+
+          break;
+        default:
+          messageCallback.call("Unknown message type: ${msg.type}");
+          debugPrint("Unknown message type: ${msg.type}");
+      }
+    }
+  });
+
   await socket.connection.firstWhere((state) => state is Connected);
-  FFAppState().messages.add(MessageStruct(
+  FFAppState().messages.add(ChatResponseStruct(
         type: "chat",
         content: text,
       ));
-  uiAction.call();
-  socket.send('{"text": "$text"}');
+  ChatRequestStruct request = ChatRequestStruct(text: text, settings: settings);
+
+  uiAction?.call();
+  socket.send(json.encode(request.toSerializableMap()));
+  uiAction?.call();
+  FFAppState().listening = true;
 }

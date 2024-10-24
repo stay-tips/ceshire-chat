@@ -67,6 +67,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'settings',
           path: '/settings',
           builder: (context, params) => const SettingsWidget(),
+        ),
+        FFRoute(
+          name: 'plugins',
+          path: '/plugins',
+          builder: (context, params) => const PluginsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

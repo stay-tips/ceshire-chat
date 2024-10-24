@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
 import 'api_manager.dart';
+import 'interceptors.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
 
@@ -15,7 +16,7 @@ class CheshireCatAPIGroup {
   static String getBaseUrl({
     String? catUrl,
   }) {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     return catUrl;
   }
 
@@ -72,7 +73,7 @@ class HomeCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -98,7 +99,7 @@ class GetSettingsCall {
     String? search = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -125,7 +126,7 @@ class CreateSettingCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -159,7 +160,7 @@ class GetSettingCall {
     String? settingId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -185,7 +186,7 @@ class UpdateSettingCall {
     String? settingId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -219,7 +220,7 @@ class DeleteSettingCall {
     String? settingId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -244,7 +245,7 @@ class GetLlmsSettingsCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -270,7 +271,7 @@ class GetLlmSettingsCall {
     String? languageModelName = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -296,7 +297,7 @@ class UpsertLlmSettingCall {
     String? languageModelName = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -325,7 +326,7 @@ class GetEmbeddersSettingsCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -351,7 +352,7 @@ class GetEmbedderSettingsCall {
     String? languageEmbedderName = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -377,7 +378,7 @@ class UpsertEmbedderSettingCall {
     String? languageEmbedderName = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -407,7 +408,7 @@ class GetAvailablePluginsCall {
     String? query = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -423,18 +424,29 @@ class GetAvailablePluginsCall {
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
-      cache: false,
+      cache: true,
       isStreamingApi: false,
       alwaysAllowBody: false,
     );
   }
+
+  List? installed(dynamic response) => getJsonField(
+        response,
+        r'''$.installed''',
+        true,
+      ) as List?;
+  List? registry(dynamic response) => getJsonField(
+        response,
+        r'''$.registry''',
+        true,
+      ) as List?;
 }
 
 class InstallPluginCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -460,7 +472,7 @@ class InstallPluginFromRegistryCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -490,7 +502,7 @@ class TogglePluginCall {
     String? pluginId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -517,7 +529,7 @@ class GetPluginDetailsCall {
     String? pluginId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -543,7 +555,7 @@ class DeletePluginCall {
     String? pluginId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -568,7 +580,7 @@ class GetPluginsSettingsCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -594,7 +606,7 @@ class GetPluginSettingsCall {
     String? pluginId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -620,7 +632,7 @@ class UpsertPluginSettingsCall {
     String? pluginId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -651,7 +663,7 @@ class RecallMemoriesFromTextCall {
     int? k,
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -679,7 +691,7 @@ class GetCollectionsCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -704,7 +716,7 @@ class WipeCollectionsCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -730,7 +742,7 @@ class WipeSingleCollectionCall {
     String? collectionId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -757,7 +769,7 @@ class WipeMemoryPointCall {
     String? memoryId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -784,7 +796,7 @@ class WipeMemoryPointsByMetadataCall {
     String? collectionId = '',
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -809,7 +821,7 @@ class GetConversationHistoryCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -834,7 +846,7 @@ class WipeConversationHistoryCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -859,7 +871,7 @@ class UploadFileCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -885,7 +897,7 @@ class UploadUrlCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -918,7 +930,7 @@ class UploadMemoryCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -944,7 +956,7 @@ class GetAllowedMimetypesCall {
   Future<ApiCallResponse> call({
     String? catUrl,
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
     final baseUrl = CheshireCatAPIGroup.getBaseUrl(
       catUrl: catUrl,
     );
@@ -967,27 +979,41 @@ class GetAllowedMimetypesCall {
 
 /// End 😸 Cheshire-Cat API Group Code
 
-class SendMessageCall {
+class CatHomeCall {
   static Future<ApiCallResponse> call({
     String? catUrl,
+    String? apiKey = '',
   }) async {
-    catUrl ??= FFDevEnvironmentValues().catUrl;
+    catUrl ??= 'http://${FFDevEnvironmentValues().cat_address}';
 
-    return ApiManager.instance.makeApiCall(
-      callName: 'send message',
-      apiUrl: '$catUrl/ws/user',
-      callType: ApiCallType.POST,
-      headers: {},
-      params: {},
-      bodyType: BodyType.JSON,
-      returnBody: true,
-      encodeBodyUtf8: false,
-      decodeUtf8: false,
-      cache: false,
-      isStreamingApi: false,
-      alwaysAllowBody: false,
+    return FFApiInterceptor.makeApiCall(
+      ApiCallOptions(
+        callName: 'cat home',
+        apiUrl: catUrl,
+        callType: ApiCallType.GET,
+        headers: const {
+          'Content-Type': 'application/json',
+        },
+        params: const {},
+        returnBody: true,
+        encodeBodyUtf8: false,
+        decodeUtf8: false,
+        cache: false,
+        isStreamingApi: false,
+        alwaysAllowBody: false,
+      ),
+      interceptors,
     );
   }
+
+  static final interceptors = [
+    AuthInterceptor(),
+  ];
+
+  static String? version(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.version''',
+      ));
 }
 
 class ApiPagingParams {

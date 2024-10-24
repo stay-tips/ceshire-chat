@@ -3,23 +3,24 @@ import 'chat_widget.dart' show ChatWidget;
 import 'package:flutter/material.dart';
 
 class ChatModel extends FlutterFlowModel<ChatWidget> {
-  ///  Local state fields for this page.
-
-  bool isDrawerEditing = false;
-
   ///  State fields for stateful widgets in this page.
 
   final formKey = GlobalKey<FormState>();
+  // State field(s) for ui_messaes widget.
+  ScrollController? uiMessaes;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
 
   @override
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+    uiMessaes = ScrollController();
+  }
 
   @override
   void dispose() {
+    uiMessaes?.dispose();
     textFieldFocusNode?.dispose();
     textController?.dispose();
   }

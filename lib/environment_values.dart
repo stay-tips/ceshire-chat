@@ -20,12 +20,16 @@ class FFDevEnvironmentValues {
       final String response =
           await rootBundle.loadString(environmentValuesPath);
       final data = await json.decode(response);
-      _catUrl = data['catUrl'];
+      _is_concierge_secured = data['is_concierge_secured'];
+      _cat_address = data['cat_address'];
     } catch (e) {
       print('Error loading environment values: $e');
     }
   }
 
-  String _catUrl = '';
-  String get catUrl => _catUrl;
+  bool _is_concierge_secured = false;
+  bool get is_concierge_secured => _is_concierge_secured;
+
+  String _cat_address = '';
+  String get cat_address => _cat_address;
 }
